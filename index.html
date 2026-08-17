@@ -1,0 +1,127 @@
+<!-- মূল পরীক্ষা স্ক্রিন -->
+<div id="exam-app">
+    <header class="app-header">
+        <div class="header-container">
+            <div class="header-top">
+                <h1>পরীক্ষা (Takamul CBT)</h1>
+                <div class="category-switch">
+                    <button id="cat-Cleaner" class="cat-btn active" onclick="app.switchCategory('Cleaner')">Cleaner</button>
+                    <button id="cat-LoadUnload" class="cat-btn" onclick="app.switchCategory('LoadUnload')">Load & Unload</button>
+                </div>
+            </div>
+            <div class="header-info">
+                <span class="badge support-badge">📞 হেল্প: 01863069692</span>
+                <span class="badge timer-badge">
+                    <span class="timer-dot"></span> সময়: <strong id="timer-display">30:00</strong>
+                </span>
+                <button class="btn-submit" onclick="app.submitExam()">পরীক্ষা জমা দিন</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <!-- প্রশ্নের প্যালেট (একটির নিচে আরেকটি সাজানো এবং স্ক্রলযোগ্য) -->
+        <aside class="palette-card">
+            <h3 class="palette-title">প্রশ্ন তালিকা</h3>
+            <div id="q-palette" class="palette-grid"></div>
+        </aside>
+
+        <!-- মূল প্রশ্ন এরিয়া -->
+        <main class="quiz-card">
+            <div class="question-content">
+                <div class="q-header">
+                    <div class="q-num" id="q-num-display">১</div>
+                    <div class="q-text" id="q-text-display">ডাটা লোড হচ্ছে...</div>
+                </div>
+                <div class="options-list" id="options-display"></div>
+            </div>
+
+            <div class="nav-controls">
+                <button id="btn-prev" class="btn-nav btn-prev" onclick="app.navigate(-1)">ফিরে যান</button>
+                <button id="btn-next" class="btn-nav btn-next" onclick="app.navigate(1)">এগিয়ে যান</button>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- রেজাল্ট স্ক্রিন -->
+<div id="result-app" class="modal-screen" style="display: none;">
+    <div class="result-box">
+        <h2 class="result-title">পরীক্ষা সম্পন্ন হয়েছে!</h2>
+        <p>ক্যাটাগরি: <strong id="res-cat" style="color: var(--primary);"></strong></p>
+        <div class="score-display">
+            প্রাপ্ত স্কোর: <br>
+            <span id="res-score" class="score-highlight">0</span> / <span id="res-total">0</span>
+        </div>
+        <button class="btn-nav btn-next" onclick="app.restartExam()" style="width: 100%;">আবার পরীক্ষা দিন</button>
+    </div>
+</div>
+
+<!-- এডমিন স্ক্রিন -->
+<div id="admin-app" class="modal-screen" style="display: none;">
+    <div class="admin-header-area">
+        <div>
+            <h2>এডমিন কন্ট্রোল প্যানেল</h2>
+            <p class="admin-dev-contact">👨‍💻 Developer: <strong>Hridoy Ahmmed</strong> | 📞 <strong>01863069692</strong></p>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn-nav" style="background:#dc3545; color:white; padding:8px 15px;" onclick="app.resetDefaultData()">ডিফল্ট রিসেট</button>
+            <button class="btn-nav btn-prev" style="padding:8px 15px;" onclick="app.closeAdmin()">বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <div class="admin-grid">
+        <!-- প্রশ্ন যুক্ত করার ফর্ম -->
+        <div class="admin-panel-box">
+            <h3 style="margin-bottom: 15px; color: var(--primary);">নতুন প্রশ্ন যোগ করুন</h3>
+            
+            <div class="input-group">
+                <label>ক্যাটাগরি নির্বাচন করুন:</label>
+                <select id="admin-cat-select" onchange="app.renderAdminList()">
+                    <option value="Cleaner">Cleaner (ক্লিনার)</option>
+                    <option value="LoadUnload">Load & Unload (লোড-আনলোড)</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label>প্রশ্ন:</label>
+                <textarea id="adm-q" rows="2" placeholder="এখানে প্রশ্ন লিখুন..."></textarea>
+            </div>
+
+            <div class="quick-fill-btns">
+                <button class="q-btn yes-no" onclick="app.quickFill('yesno')">হ্যাঁ / না</button>
+                <button class="q-btn true-false" onclick="app.quickFill('truefalse')">সত্য / মিথ্যা</button>
+                <button class="q-btn clear-btn" onclick="app.quickFill('clear')">ক্লিয়ার</button>
+            </div>
+
+            <div class="input-group"><label>অপশন A:</label><input type="text" id="adm-opt-0"></div>
+            <div class="input-group"><label>অপশন B:</label><input type="text" id="adm-opt-1"></div>
+            <div class="input-group"><label>অপশন C (ঐচ্ছিক):</label><input type="text" id="adm-opt-2"></div>
+            <div class="input-group"><label>অপশন D (ঐচ্ছিক):</label><input type="text" id="adm-opt-3"></div>
+            
+            <div class="input-group">
+                <label>সঠিক উত্তর কোনটি?</label>
+                <select id="adm-ans">
+                    <option value="0">A</option>
+                    <option value="1">B</option>
+                    <option value="2">C</option>
+                    <option value="3">D</option>
+                </select>
+            </div>
+            <button class="btn-nav btn-next" style="width: 100%; margin-top: 15px;" onclick="app.addQuestion()">প্রশ্ন যুক্ত করুন</button>
+        </div>
+
+        <!-- প্রশ্ন তালিকা ও ম্যানেজমেন্ট -->
+        <div class="admin-panel-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: var(--primary);">বর্তমান প্রশ্নাবলী</h3>
+                <span id="admin-cat-label" class="badge support-badge">Cleaner</span>
+            </div>
+            <div id="admin-list" class="admin-q-list"></div>
+        </div>
+    </div>
+</div>
+
+<footer class="site-footer">
+    ডেভেলপার: <span class="dev-link" onclick="app.openAdmin()">HRIDOY AHMMED (01863069692)</span>
+</footer>
